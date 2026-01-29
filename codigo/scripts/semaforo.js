@@ -6,6 +6,8 @@ const fluxoVal = document.getElementById("nivel_fluxo");
 const fluxoCarros = document.getElementById("fluxo_val");
 const climaVal = document.getElementById("clima");
 const sensorVal = document.getElementById("status_sensor");
+const luzAtualEl = document.getElementById("luz_atual");
+const tempoRestEl = document.getElementById("tempo_restante");
 
 let statusAtual = "verde";
 let tempoAtual = 0;
@@ -93,7 +95,6 @@ function atualizarSemaforo() {
     }
     
     let tempoAtualizado = resultado.tempos[statusAtual];
-    
     tempoAtual++;
     if (tempoAtual >= tempoAtualizado) {
         if (statusAtual === "verde") {
@@ -105,7 +106,9 @@ function atualizarSemaforo() {
         }
         tempoAtual = 0;
     }
-    
+    const restante = Math.max(0, tempoAtualizado - tempoAtual);
+    if (luzAtualEl) luzAtualEl.innerText = statusAtual;
+    if (tempoRestEl) tempoRestEl.innerText = `${restante}s`;
     atualizarLEDs(statusAtual, resultado.motivos);
 }
 
@@ -115,13 +118,31 @@ function atualizarLEDs(cor, motivos = []) {
     
     elemento.classList.remove("verde", "amarelo", "vermelho", "pisca_amarelo");
     elemento.classList.add(cor);
+    if (motivos && motivos.length) {
+        const now = new Date();
+        const pad = (n) => String(n).padStart(2, '0');
+        const ts = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+        motivos.forEach(m => logSistema.push(`${ts} - ${m}`));
+        if (logSistema.length > 200) logSistema.shift();
+    }
 
 }
 function atualizarHistorico(){
     if (!historico) return;
-    historico.value = sensor.historico_fluxo.map(f => `${f.ts}: ${f.value}`).join('\n');
-
+    const sistema = logSistema.slice(-50); 
+    const sistemaLinhas = sistema.map(l => l);
+    const fluxoLinhas = sensor.historico_fluxo.map(f => `${f.ts}: ${f.value}`);
+    const todas = [];
+    if (sistemaLinhas.length) {
+        todas.push('=== Sistema ===');
+        todas.push(...sistemaLinhas);
+        todas.push('');
+    }
+    todas.push('=== Fluxo (últimos) ===');
+    todas.push(...fluxoLinhas);
+    historico.value = todas.join('\n');
 }
+
 
 
 
