@@ -134,11 +134,11 @@ function atualizarHistorico(){
     const fluxoLinhas = sensor.historico_fluxo.map(f => `${f.ts}: ${f.value}`);
     const todas = [];
     if (sistemaLinhas.length) {
-        todas.push('=== Sistema ===');
+        todas.push('Sistema');
         todas.push(...sistemaLinhas);
         todas.push('');
     }
-    todas.push('=== Fluxo (últimos) ===');
+    todas.push('Fluxo (últimos)');
     todas.push(...fluxoLinhas);
     historico.value = todas.join('\n');
 }
