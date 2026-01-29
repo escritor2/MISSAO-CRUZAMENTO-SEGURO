@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semaforo.</title>
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="fluxo">
+            <p class="fVal">Fluxo de carros: <span id="fluxo_val"></span></p>
+        </div>
+        <div class="semaforo">
+            <div class="luz verde"></div>
+            <div class="luz amarelo"></div>
+            <div class="luz vermelho"></div>
+        </div>
+        <div class="conf">
+            <ul>
+                <li>Estado servidor: <span id="status_servidor"></span></li>
+                <li>Clima: <span id="clima"></span></li>
+                <li>Fluxo: <span id="nivel_fluxo"></span></li>
+                <li>Funcionamento sensor: <span id="status_sensor"></span></li>
+            </ul>
+        </div>
+        <div class="historico">
+            <textarea name="log" id="log"></textarea>
+        </div>
+    </div>
+    <script src="scripts/sensor.js"></script>
+    <script src="scripts/semaforo.js"></script>
+</body>
+</html>
